@@ -1,6 +1,6 @@
 # @package _global_
 defaults:
-  - /train/asru/sot_dicow/base
+  - /asru/sot_dicow/base
 
 experiment: sot_dicow_v1.0
 model:

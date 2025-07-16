@@ -140,16 +140,19 @@ Parameters are described in `configs/local_paths.sh`. Edit the values accordingl
 ## Citation
 If you use our model or code, please, cite:
 ```
-@misc{polok2024targetspeakerasrwhisper,
-      title={Target Speaker ASR with Whisper},
-      author={Alexander Polok and Dominik Klement and Matthew Wiesner and Sanjeev Khudanpur and Jan Černocký and Lukáš Burget},
-      year={2024},
-      eprint={2409.09543},
-      archivePrefix={arXiv},
-      primaryClass={eess.AS},
-      url={https://arxiv.org/abs/2409.09543},
+@article{polok_dicow_2026,
+	title = {{DiCoW}: {Diarization}-conditioned {Whisper} for target speaker automatic speech recognition},
+	volume = {95},
+	issn = {0885-2308},
+	url = {https://www.sciencedirect.com/science/article/pii/S088523082500066X},
+	doi = {https://doi.org/10.1016/j.csl.2025.101841},
+	journal = {Computer Speech \& Language},
+	author = {Polok, Alexander and Klement, Dominik and Kocour, Martin and Han, Jiangyu and Landini, Federico and Yusuf, Bolaji and Wiesner, Matthew and Khudanpur, Sanjeev and Černocký, Jan and Burget, Lukáš},
+	year = {2026},
+	keywords = {Diarization-conditioned Whisper, Long-form ASR, Speaker diarization, Target-speaker ASR, Whisper adaptation},
+	pages = {101841},
 }
 ```
 
 ## Contact
-For more information, feel free to contact us: [ipoloka@fit.vut.cz](mailto:ipoloka@fit.vut.cz), [xkleme15@vutbr.cz](mailto:xkleme15@vutbr.cz).
+For more information, feel free to contact us: [ikocour@fit.vut.cz](mailto:ikocour@fit.vut.cz).
