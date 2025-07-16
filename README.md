@@ -1,12 +1,10 @@
-# Target Speaker ASR with Whisper
+# SOT-DiCoW
 
-This repository contains the official implementation of Target Speaker Whisper (available on [arxiv](https://arxiv.org/pdf/2409.09543)).
+This repository contains the official implementation of SOT-DiCoW (submitted to ASRU 2025).
 
 ## Setup
 1. Clone the repository: `git clone ...; cd ...`
 2. Setup python environment (using conda or virtual environment):
-    - Conda: `conda create -n ts_asr_whisper python=3.11`
-    - Virtual env: `python -m venv ts_asr_whisper`
 3. Install packages: `pip install -r requirements.txt`
 4. Change all the paths in `configs/local_paths.sh` (variables are explained below) based on your setup
 5. Change paths in `scripts/data/prepare.sh` if needed (by default, data is going to be prepared and saved to `./data`) and execute it to prepare the data
@@ -15,38 +13,24 @@ This repository contains the official implementation of Target Speaker Whisper (
 ## Usage
 Our codebase uses Hydra configuration package. All config yaml files are located in `./configs`. The base configuration file with default values is `configs/base.yaml` (all the parameters are explained below).
 
-Currently, our codebase offers 3 run modes:
-1. **pre-train**: Pre-train whisper encoder CTC
-2. **fine-tune**: Fine-tune the whole Whisper with target speaker amplifiers (FDDT) to perform target speaker ASR
-3. **decode**: Decode with pre-trained model
-
-The codebase supports 3 compute grid systems: SGE, PBS, SLURM. Besides, one can also run training/decoding without any grid submission system by omitting the submission command (i.e. sbatch in the case of SLURM).
-
-To run the codebase, execute one of the following lines:
-```bash
-# pre-train
-sbatch ./scripts/submit_slurm.sh +pretrain=ctc_librispeech_large
-
-# Fine-tune
-sbatch ./scripts/submit_slurm.sh +train=icassp/table1_final-models/ami
-
-# Decode
-sbatch ./scripts/submit_slurm.sh +decode=best_ami
+To replicate the ASRU experiments, please run one of these commands:
 ```
+# local node
+python src/main.py +asru=sot_dicow/sot_dicow
+torchrun --standalone --nnodes=1 --nproc-per-node=4 src/main.py +asru=sot_dicow/sot_dicow
 
-As SGE and PBS do not support variable-passing through shell arguments, you need to specify the config through variable list as:
-```
-qsub -v "CFG=+decode=best_ami" ./scripts/submit_sge.sh
+# SGE
+CFG="+asru=sot_dicow/sot_dicow" qsub scripts/training/submit_sge.sh
+
+# PBS
+CFG="+asru=sot_dicow/sot_dicow" qsub scripts/training/submit_pbs.sh
+
+# SLURM
+sbatch scripts/training/submit_slurm.sh +asru=sot_dicow/sot_dicow
 ```
 
 ### Config Details
 As you can see above, the configs are not specified via yaml file paths. Instead, Hydra uses so-called "config groups". All of our config files contain `# @package _global_` on the first line, which specifies that the given values are overwriting the global default values specified in `./configs/base.yaml`. If the line is not present in the config yaml file, Hydra will produce a nested object based on the relative file path.
-Furthermore, as can be seen the `train/icassp*` config hierarchy, one can create hierarchical configuration by specifying defaults as:
-```
-defaults:
-  - /train/icassp/table1_final-models/base # "/" + relative path to the config
-```
-This way, it is easy to create a configuration hierarchy the same way we did for our ICASSP.
 
 Furthermore, none of the YAML config files contain any paths, as we strived for maximal inter-cluster/setup compatibility. Instead, Hydra package substitutes shell variables
 
