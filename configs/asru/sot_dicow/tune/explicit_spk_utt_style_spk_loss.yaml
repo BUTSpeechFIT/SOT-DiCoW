@@ -1,0 +1,8 @@
+# @package _global_
+defaults:
+  - /train/asru/sot_dicow/tune/explicit_spk_utt_style
+
+experiment: explicit_sot_dicow_v1.1.utterance_spk_loss5
+
+model:
+  mt_sot_speaker_loss_weight: 5.0

@@ -1,0 +1,7 @@
+# @package _global_
+defaults:
+  - /train/asru/sot_dicow/sot_dicow
+
+experiment: sot_dicow_v1.0.spk_attn1.0
+model:
+  mt_sot_speaker_attn_weight: 1.0

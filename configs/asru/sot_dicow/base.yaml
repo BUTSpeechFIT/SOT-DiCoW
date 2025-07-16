@@ -1,0 +1,70 @@
+# @package _global_
+experiment: ${model.whisper_model}_mt_sot_asr_spk${model.mt_num_speakers}
+wandb:
+  project: mt_sot_asr
+
+model:
+  ctc_weight: 0.0
+  whisper_model: Lakoc/DiCoW_v2.1
+  reinit_from: null
+  mt_asr: true
+  mt_sot: true
+  mt_interactions: false
+  mt_num_speakers: 8
+  mt_sot_aggregate_speakers: true
+  mt_sot_aggregation_type: "mean"
+  mt_sot_transform_speakers: true
+  mt_sot_style: "utterance"
+  params_to_keep_frozen_keywords:
+  - model.encoder.conv1
+  - model.encoder.conv2
+  - model.encoder.embed_positions
+  prefixes_to_preheat:
+  - proj_out2.spkr_ts_weight
+  - model.decoder.embed_tokens.spkr_ts_weight
+  - model.encoder.sot_layer
+  - model.encoder.initial_fddt
+  - model.encoder.fddts
+  - model.decoder.layers.0.encoder_attn.speaker_info_k_proj
+  - model.decoder.layers.1.encoder_attn.speaker_info_k_proj
+  - model.decoder.layers.2.encoder_attn.speaker_info_k_proj
+  - model.decoder.layers.3.encoder_attn.speaker_info_k_proj
+  - model.decoder.layers.0.encoder_attn.speaker_info_q_proj
+  - model.decoder.layers.1.encoder_attn.speaker_info_q_proj
+  - model.decoder.layers.2.encoder_attn.speaker_info_q_proj
+  - model.decoder.layers.3.encoder_attn.speaker_info_q_proj
+  - model.decoder.layers.0.encoder_attn.speaker_info_v_proj
+  - model.decoder.layers.1.encoder_attn.speaker_info_v_proj
+  - model.decoder.layers.2.encoder_attn.speaker_info_v_proj
+  - model.decoder.layers.3.encoder_attn.speaker_info_v_proj
+
+data:
+  train_text_norm: "whisper"
+  use_timestamps: true
+  mt_sot_augment_speaker_order: false
+  mt_sot_style: ${model.mt_sot_style}
+
+decoding:
+  decoding_ctc_weight: 0.0
+
+training:
+  generation_num_beams: 10
+  learning_rate: 2e-6
+  num_train_epochs: 30
+  early_stopping_patience: 6
+  warmup_steps: 500
+  use_fddt_only_n_steps: 500
+  use_fddt_only_n_epochs: 0
+  overall_batch_size: 192
+  gradient_accumulation_steps: 8
+  per_device_train_batch_size: 16
+  remove_timestamps_from_ctc: true
+  save_strategy: steps
+  eval_strategy: steps
+  eval_on_start: true
+  eval_steps: 500
+  save_steps: 500
+  eval_metrics_list: [ "tcp_wer", "cp_wer", "tcploc_wer" ]
+  train_metrics_list: [ "tcp_wer", "cp_wer", "tcploc_wer" ]
+  auto_find_batch_size: false
+  dataloader_num_workers: 2

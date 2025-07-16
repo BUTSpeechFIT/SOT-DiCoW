@@ -1,0 +1,34 @@
+# @package _global_
+defaults:
+  - /train/asru/sot_dicow/base
+
+experiment: sot_dicow_v1.1.ctc_spk-loss5.decode_beam10.librispeech
+model:
+  whisper_model: Lakoc/DiCoW_v2.1
+  mt_num_speakers: 8
+  mt_sot_use_sad: true
+  mt_sot_spk_mask_inv_temp: null
+  mt_sot_aggregation_type: "concat"
+  ctc_weight: 0.2
+  mt_sot_speaker_loss_weight: 5
+  reinit_from: "exp/sot_dicow_v1.0.ctc_spk-loss5/checkpoint-3000/model.safetensors"
+
+data:
+  mt_sot_augment_speaker_order: true
+  eval_cutsets:
+  - ${oc.env:MANIFEST_DIR}/notsofar_eval_sc_cutset.jsonl.gz
+    # - ${oc.env:MANIFEST_DIR}/ami-sdm_test_sc_cutset.jsonl.gz
+    # - ${oc.env:MANIFEST_DIR}/ami-ihm-mix_cutset_test.jsonl.gz
+  - ${oc.env:MANIFEST_DIR}/libri2mix_mix_clean_sc_test_cutset.jsonl.gz
+  - ${oc.env:MANIFEST_DIR}/libri2mix_mix_both_sc_test_cutset.jsonl.gz
+  - ${oc.env:MANIFEST_DIR}/librispeech_cutset_test-other.jsonl.gz
+  #stno_gaussian_noise_var: 0.2
+  #stno_gaussian_noise_prob: 0.75
+
+
+training:
+  decode_only: true
+  per_device_eval_batch_size: 2
+  dataloader_num_workers: 2
+  dataloader_pin_memory: true
+  generation_num_beams: 10

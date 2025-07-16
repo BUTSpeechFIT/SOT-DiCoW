@@ -1,0 +1,35 @@
+# @package _global_
+defaults:
+  - /train/asru/sot_dicow/sot_dicow
+
+experiment: explicit_sot_dicow_v1.1.speaker
+
+data:
+  mt_sot_explicit_speaker_tokens: ${model.mt_sot_explicit_speaker_tokens}
+
+model:
+  mt_sot_style: "speaker"
+  mt_sot_explicit_speaker_tokens: True
+  prefixes_to_preheat:
+  - proj_out2.spkr_ts_weight
+  - model.decoder.embed_tokens.spkr_ts_weight
+  - model.encoder.sot_layer
+  - model.encoder.initial_fddt
+  - model.encoder.fddts
+  - model.decoder.layers.0.encoder_attn.speaker_info_k_proj
+  - model.decoder.layers.1.encoder_attn.speaker_info_k_proj
+  - model.decoder.layers.2.encoder_attn.speaker_info_k_proj
+  - model.decoder.layers.3.encoder_attn.speaker_info_k_proj
+  - model.decoder.layers.0.encoder_attn.speaker_info_q_proj
+  - model.decoder.layers.1.encoder_attn.speaker_info_q_proj
+  - model.decoder.layers.2.encoder_attn.speaker_info_q_proj
+  - model.decoder.layers.3.encoder_attn.speaker_info_q_proj
+  - model.decoder.layers.0.encoder_attn.speaker_info_v_proj
+  - model.decoder.layers.1.encoder_attn.speaker_info_v_proj
+  - model.decoder.layers.2.encoder_attn.speaker_info_v_proj
+  - model.decoder.layers.3.encoder_attn.speaker_info_v_proj
+  - model.decoder.embed_tokens
+  - proj_out
+
+training:
+  use_fddt_only_n_steps: 500

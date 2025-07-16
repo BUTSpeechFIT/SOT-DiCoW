@@ -1,0 +1,8 @@
+# @package _global_
+defaults:
+  - /train/asru/sot_dicow/tune/explicit_spk
+
+experiment: explicit_sot_dicow_v1.1.utterance
+
+model:
+  mt_sot_style: "utterance"

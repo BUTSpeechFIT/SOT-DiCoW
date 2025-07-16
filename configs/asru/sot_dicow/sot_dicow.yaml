@@ -1,0 +1,44 @@
+# @package _global_
+defaults:
+  - /train/asru/sot_dicow/base
+
+experiment: sot_dicow_v1.0
+model:
+  whisper_model: Lakoc/DiCoW_v2.1
+  reinit_from: null
+  mt_num_speakers: 8
+  mt_sot_use_sad: true
+  mt_sot_spk_mask_inv_temp: null
+  mt_sot_aggregation_type: "concat"
+
+data:
+  mt_sot_augment_speaker_order: true
+  train_cutsets:
+  - ${oc.env:MANIFEST_DIR}/notsofar_train_sc_cutset_30s.jsonl.gz
+  - ${oc.env:MANIFEST_DIR}/notsofar_dev_sc_cutset_30s.jsonl.gz
+  - ${oc.env:MANIFEST_DIR}/ami-sdm_train_sc_cutset_30s.jsonl.gz
+    #- ${oc.env:MANIFEST_DIR}/ami-ihm-mix_cutset_train_30s.jsonl.gz
+  - ${oc.env:MANIFEST_DIR}/libri2mix_both_360_train_sc_cutset_30s.jsonl.gz
+  - ${oc.env:MANIFEST_DIR}/libri2mix_clean_360_train_sc_cutset_30s.jsonl.gz
+  dataset_weights: [3, 1, 3, 1, 1]
+  dev_cutsets: ${oc.env:MANIFEST_DIR}/notsofar_eval_sc_cutset.jsonl.gz
+  eval_cutsets:
+  - ${oc.env:MANIFEST_DIR}/notsofar_eval_sc_cutset.jsonl.gz
+  - ${oc.env:MANIFEST_DIR}/ami-sdm_test_sc_cutset.jsonl.gz
+    #- ${oc.env:MANIFEST_DIR}/ami-ihm-mix_cutset_test.jsonl.gz
+  - ${oc.env:MANIFEST_DIR}/libri2mix_mix_clean_sc_test_cutset.jsonl.gz
+  - ${oc.env:MANIFEST_DIR}/libri2mix_mix_both_sc_test_cutset.jsonl.gz
+  #stno_gaussian_noise_var: 0.2
+  #stno_gaussian_noise_prob: 0.75
+
+training:
+  num_train_epochs: 30
+  per_device_train_batch_size: 1
+  per_device_eval_batch_size: 2
+  dataloader_prefetch_factor: 4
+  dataloader_num_workers: 2
+  dataloader_pin_memory: true
+  mt_sot_decay_params: null
+  mt_sot_decay_steps: 0
+  use_fddt_only_n_steps: 1500
+  use_fddt_only_n_epochs: 0
