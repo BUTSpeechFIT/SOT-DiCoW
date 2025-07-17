@@ -2,6 +2,8 @@
 
 This repository contains the official implementation of SOT-DiCoW (submitted to ASRU 2025).
 
+This repository is a fork of the previous work TS-ASR Whisper available on [GitHUB](https://github.com/BUTSpeechFIT/TS-ASR-Whisper).
+
 ## Setup
 1. Clone the repository: `git clone ...; cd ...`
 2. Setup python environment (using conda or virtual environment):
